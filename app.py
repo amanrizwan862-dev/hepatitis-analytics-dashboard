@@ -479,6 +479,175 @@ st.plotly_chart(
     fig,
     width="stretch"
 )
+st.markdown("---")
+st.subheader("Additional Analytics")
+col1, col2 = st.columns(2)
+
+with col1:
+
+    histology_counts = filtered_df["Histology"].value_counts()
+
+    fig = px.bar(
+        x=histology_counts.index.astype(str),
+        y=histology_counts.values,
+        title="Histology Distribution",
+        labels={
+            "x":"Histology",
+            "y":"Count"
+        }
+    )
+
+    fig.update_layout(
+        template="plotly_dark"
+    )
+    fig.update_layout(
+    template="plotly_dark",
+    paper_bgcolor="#1a1f2e",
+    plot_bgcolor="#1a1f2e",
+    height=400,
+    font=dict(
+        color="white",
+        size=14
+    ),
+    title_font=dict(
+        color="white",
+        size=24
+    )
+)
+
+    st.plotly_chart(
+        fig,
+        width="stretch"
+    )
+    with col2:
+
+        sex_counts = filtered_df["Sex"].value_counts()
+
+        fig = px.bar(
+            x=sex_counts.index.astype(str),
+            y=sex_counts.values,
+            title="Sex Distribution"
+        )
+        fig.update_layout(
+    template="plotly_dark",
+    paper_bgcolor="#1a1f2e",
+    plot_bgcolor="#1a1f2e",
+    height=400,
+    font=dict(
+        color="white",
+        size=14
+    ),
+    title_font=dict(
+        color="white",
+        size=24
+    )
+)
+
+        st.plotly_chart(fig, width="stretch")
+
+    st.markdown("---")
+    temp_df = filtered_df.copy()
+
+temp_df["Bilirubin"] = pd.to_numeric(
+    temp_df["Bilirubin"],
+    errors="coerce"
+)
+
+line_df = temp_df.groupby(
+    "Age"
+)["Bilirubin"].mean().reset_index()
+
+fig = px.line(
+    line_df,
+    x="Age",
+    y="Bilirubin",
+    title="Average Bilirubin by Age"
+)
+
+fig.update_layout(
+    template="plotly_dark",
+    height=250
+)
+fig.update_layout(
+    template="plotly_dark",
+    paper_bgcolor="#1a1f2e",
+    plot_bgcolor="#1a1f2e",
+    font=dict(color="white"),
+    title_font=dict(color="white", size=20),
+    height=250
+)
+
+st.plotly_chart(
+    fig,
+    width="stretch"
+)
+area_df = filtered_df.groupby(
+    "Age"
+).size().reset_index(name="Count")
+
+fig = px.area(
+    area_df,
+    x="Age",
+    y="Count",
+    title="Patient Count by Age"
+)
+
+fig.update_layout(
+    template="plotly_dark",
+    height=250
+)
+fig.update_layout(
+    template="plotly_dark",
+    paper_bgcolor="#1a1f2e",
+    plot_bgcolor="#1a1f2e",
+    font=dict(color="white"),
+    title_font=dict(color="white", size=20),
+    height=250
+)
+
+st.plotly_chart(
+    fig,
+    width="stretch"
+)
+    
+
+temp_df = filtered_df.copy()
+
+temp_df["Albumin"] = pd.to_numeric(
+    temp_df["Albumin"],
+    errors="coerce"
+)
+
+fig = px.violin(
+    temp_df,
+    y="Albumin",
+    color="Class",
+    box=True,
+    title="Albumin Violin Distribution"
+)
+
+fig.update_layout(
+    template="plotly_dark"
+)
+fig.update_layout(
+    template="plotly_dark",
+    paper_bgcolor="#1a1f2e",
+    plot_bgcolor="#1a1f2e",
+    height=400,
+    font=dict(
+        color="white",
+        size=14
+    ),
+    title_font=dict(
+        color="white",
+        size=24
+    )
+)
+st.plotly_chart(
+    fig,
+    width="stretch"
+)
+
 st.markdown("""
 <div style="
 background:#1a1f2e;
